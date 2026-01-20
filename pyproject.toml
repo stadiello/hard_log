@@ -1,0 +1,20 @@
+[project]
+name = "hard-log"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "stadiello",email = "tadiello.sebastien@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "rich (>=14.2.0,<15.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "hard_log", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
