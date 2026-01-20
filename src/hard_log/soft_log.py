@@ -10,13 +10,7 @@ import time
 class SoftLog:
     def __init__(self):
         self.console = Console()
-
-    # def make_line(self, ts, tag, msg, color="bright_red"):
-    #     t = Text(f"[{ts}] ", style="bright_red")
-    #     t.append(f"{tag:<8}", style="bold bright_green")
-    #     t.append(" :: ", style="bright_white")
-    #     t.append(msg, style=color)
-    #     return t
+        
     def make_line(self, ts, tag, msg, color="bright_red"):
         t = Text(f"[{ts[:2]}", style="bright_white")
         t.append(f"{ts[2:]}", style="bold bright_red")
