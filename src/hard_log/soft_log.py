@@ -1,5 +1,6 @@
 # !/usr/bin/env python3
 
+import os
 from rich.console import Console
 from rich.live import Live
 from rich.table import Table
@@ -8,35 +9,45 @@ from datetime import datetime
 import time
 
 class SoftLog:
-    def __init__(self):
+    def __init__(self, path: str = "logs/", file_name: str = "log.txt"):
         self.console = Console()
-        
-    def make_line(self, ts, tag, msg, color="bright_red"):
-        t = Text(f"[{ts[:2]}", style="bright_white")
-        t.append(f"{ts[2:]}", style="bold bright_red")
-        t.append(f"] {tag:<8}", style="bold bright_white")
+        self.path = path
+        self.file_name = file_name
+    
+    def _color(self, tag) -> str:
+        colors = {
+            "BOOT": "bright_red",
+            "ERROR": "orange1",
+            "WARN": "bright_yellow",
+            "INFO": "bright_cyan",
+            "DEBUG": "bright_magenta",
+            "SUCCESS": "bright_green",
+        }
+        return colors.get(tag, "bright_white")
+
+    def _make_line(self, ts, tag, msg, color="bright_red") -> Text:
+        t = Text(f"[", style="bright_white")
+        t.append(f"{ts[:2]}", style="bright_white")
+        t.append(f"{ts[2:]}", style="bold " + color)
+        t.append("] ", style="bright_white")
+        t.append(f"{tag:<8}", style="bold bright_white")
         t.append(" :: ", style="bright_white")
         t.append(msg, style=color)
         return t
     
-    def render(self, lines_top, lines_bottom, tick):
-        table = Table.grid(padding=(0, 1))
-        table.add_column()
+    def _archive_log(self, log_content: str) -> None:
+        if not os.path.exists(self.path):
+            os.makedirs(self.path)
+        log_file = open(os.path.join(self.path, self.file_name), "a")
+        log_file.write(str(log_content) + "\n")
+        log_file.close()
 
-        for line in lines_top:
-            table.add_row(line)
-        # "scanline" separator (simple)
-        sep = Text("─" * 78, style="orange1")
-        if tick % 2 == 0:
-            sep.stylize("dim")
-        table.add_row(sep)
-        table.add_row(Text(" "))
-
-        for line in lines_bottom:
-            table.add_row(line)
-        table.add_row(Text("─" * 78, style="orange1 dim"))
-        return table
-    
-    def log(self, tag, message, color):
+    def log(self, tag, message) -> None:
         ts = datetime.now().strftime("%H:%M:%S")
-        return self.make_line(ts, tag, message, color)
+        color = self._color(tag)
+        log_content = self._make_line(ts, tag, message, color)
+        if tag == "ERROR":
+            log_content.stylize("bold underline")
+        self.console.print(log_content)
+        self._archive_log(log_content)
+    
