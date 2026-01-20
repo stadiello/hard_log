@@ -2,8 +2,6 @@
 
 import os
 from rich.console import Console
-from rich.live import Live
-from rich.table import Table
 from rich.text import Text
 from datetime import datetime
 import time

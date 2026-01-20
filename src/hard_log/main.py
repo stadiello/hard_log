@@ -1,4 +1,4 @@
-from soft_log import SoftLog as sl
+from soft_log2 import SoftLog as sl
 
 sl = sl()
 
