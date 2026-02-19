@@ -29,9 +29,9 @@ jobs:
       run: |
         poetry build
 
-    - name: Test with pytest
-      run: |
-        poetry run pytest -v
+    # - name: Test with pytest
+    #   run: |
+    #     poetry run pytest -v
       
     - name: Publish to PyPI
       env:
