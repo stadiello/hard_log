@@ -6,6 +6,7 @@ authors = [
     {name = "stadiello",email = "tadiello.sebastien@gmail.com"}
 ]
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.13"
 dependencies = [
     "rich (>=14.2.0,<15.0.0)"
